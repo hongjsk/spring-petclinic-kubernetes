@@ -1,0 +1,4 @@
+spring.jpa.hibernate.ddl-auto: none
+
+logging.level.org.springframework: INFO
+

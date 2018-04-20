@@ -1,0 +1,6 @@
+spring.jpa.hibernate.ddl-auto: none
+
+vets:
+  cache:
+    ttl: 10
+    heap-size: 10
