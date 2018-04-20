@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.9.RELEASE</version>
+	</parent>
+
+	<groupId>org.springframework.samples</groupId>
+	<artifactId>spring-petclinic-microservices</artifactId>
+	<version>1.5.9</version>
+    <name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<!-- <module>spring-petclinic-admin-server</module> -->
+		<module>spring-petclinic-customers-service</module>
+		<module>spring-petclinic-vets-service</module>
+		<module>spring-petclinic-visits-service</module>
+		<!-- <module>spring-petclinic-config-server</module>
+        <module>spring-petclinic-discovery-server</module> -->
+        <module>spring-petclinic-api-gateway</module>
+        <module>spring-petclinic-monitoring</module>
+        <!-- <module>spring-petclinic-tracing-server</module> -->
+    </modules>
+
+    <properties>
+        <assertj.version>3.9.0</assertj.version>
+        <spring-cloud.version>Edgware.SR1</spring-cloud.version>
+        <sleuth.version>1.3.1.RELEASE</sleuth.version>
+        <java.version>1.8</java.version>
+
+		<docker.image.prefix>mszarlinski</docker.image.prefix>
+        <docker.image.exposed.port>9090</docker.image.exposed.port>
+        <docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
+		<docker.plugin.version>0.4.13</docker.plugin.version>
+    </properties>
+
+	<dependencyManagement>
+		<dependencies>
+            <!-- <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-sleuth-dependencies</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+                <version>${sleuth.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency> -->
+
+            <dependency>
+                <groupId>org.springframework.samples.petclinic.monitoring</groupId>
+                <artifactId>spring-petclinic-monitoring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+                <scope>test</scope>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>springboot</id>
+            <activation>
+                <file>
+                    <!-- Just a way to identify a Spring Boot application -->
+                    <exists>src/main/resources/bootstrap.yml</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <fork>true</fork>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->
+                                <goals>
+                                    <goal>build-info</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalProperties>
+                                        <encoding.source>${project.build.sourceEncoding}</encoding.source>
+                                        <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+                                        <java.source>${maven.compiler.source}</java.source>
+                                        <java.target>${maven.compiler.target}</java.target>
+                                    </additionalProperties>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>revision</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                            <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                            <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+                            </generateGitPropertiesFilename>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+        <profile>
+            <id>buildDocker</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.spotify</groupId>
+                            <artifactId>docker-maven-plugin</artifactId>
+                            <version>${docker.plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <phase>install</phase>
+                                    <goals>
+                                        <goal>build</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                                <dockerDirectory>${docker.image.dockerfile.dir}</dockerDirectory>
+                                <resources>
+                                    <resource>
+                                        <targetPath>/</targetPath>
+                                        <directory>${project.build.directory}</directory>
+                                        <include>${project.build.finalName}.jar</include>
+                                    </resource>
+                                </resources>
+                                <buildArgs>
+                                    <ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>
+                                    <EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>
+                                </buildArgs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
