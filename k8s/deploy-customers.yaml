@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: customers
+  labels:
+    app: spring-petclinic
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+        tier: customers
+    spec:
+      containers:
+        - image: hongjs/spring-petclinic-customers-service:latest
+          imagePullPolicy: Always
+          name: customers
+          ports:
+            - containerPort: 8080
+          env:
+          - name: MYSQL_HOSTINFO
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: hostinfo

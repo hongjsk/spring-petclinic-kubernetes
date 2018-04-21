@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.bluemix.net/rewrite-path: "serviceName=vets-service rewrite=/;serviceName=visits-service rewrite=/;serviceName=customers-service rewrite=/;;serviceName=api-gateway rewrite=/;"
+  name: api-ingress
+spec:
+  rules:
+  - host: springcamp.jp-tok.containers.mybluemix.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: api-gateway-web
+          servicePort: 80
+      - path: /api/vet/
+        backend:
+          serviceName: vets-service
+          servicePort: 80
+      - path: /api/visit/
+        backend:
+          serviceName: visits-service
+          servicePort: 80
+      - path: /api/customer/
+        backend:
+          serviceName: customers-service
+          servicePort: 80
+      - path: /api/gateway/
+        backend:
+          serviceName: api-gateway
+          servicePort: 80

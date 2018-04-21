@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+  generation: 4
+  name: api-ingress
+  namespace: default
+spec:
+  rules:
+  - host: springcamp.jp-tok.containers.mybluemix.net
+    http:
+      paths:
+      - backend:
+          serviceName: api-gateway
+          servicePort: 80
+        path: /
+      - backend:
+          serviceName: vets-service
+          servicePort: 80
+        path: /api/vet/
+      - backend:
+          serviceName: visits-service
+          servicePort: 80
+        path: /api/visit/
+      - backend:
+          serviceName: customers-service
+          servicePort: 80
+        path: /api/customer/
+      - backend:
+          serviceName: api-gateway
+          servicePort: 80
+        path: /api/gateway/
+status:
+  loadBalancer:
+    ingress:
+    - ip: 169.56.108.38
