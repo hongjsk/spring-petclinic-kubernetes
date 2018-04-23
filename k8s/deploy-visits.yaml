@@ -25,3 +25,13 @@ spec:
               configMapKeyRef:
                 name: mysql-config
                 key: hostinfo
+          - name: MYSQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credential
+                key: username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credential
+                key: password

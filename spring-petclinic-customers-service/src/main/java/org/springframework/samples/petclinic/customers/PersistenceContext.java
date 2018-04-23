@@ -35,11 +35,12 @@ class PersistenceContext {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
 
         String hostinfo = System.getenv("MYSQL_HOSTINFO");
-        //"localhost:3306";
+        String username = System.getenv("MYSQL_USERNAME");
+        String password = System.getenv("MYSQL_PASSWORD");
         
         dataSourceBuilder.url("jdbc:mysql://"+hostinfo+"/petclinic?useUnicode=true");
-        dataSourceBuilder.username("root");
-        dataSourceBuilder.password("petclinic");
+        dataSourceBuilder.username(username);
+        dataSourceBuilder.password(password);
         dataSourceBuilder.driverClassName("com.mysql.jdbc.Driver");
         return dataSourceBuilder.build();
     }

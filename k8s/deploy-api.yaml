@@ -19,9 +19,3 @@ spec:
           name: api-gateway
           ports:
             - containerPort: 8080
-          env:
-          - name: MYSQL_HOSTINFO
-            valueFrom:
-              configMapKeyRef:
-                name: mysql-config
-                key: hostinfo
