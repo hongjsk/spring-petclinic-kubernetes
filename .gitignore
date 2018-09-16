@@ -1,1 +1,6 @@
-*/target/**/*
+.vscode/**/*
+.project
+**/.settings/**/*
+**/target/**/*
+**/.classpath
+**/.factorypath
