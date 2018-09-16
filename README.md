@@ -51,10 +51,14 @@ IKS는 IBM Cloud의 서비스로서 IBM Cloud CLI를 이용하여 정보를 확�
 
 다음 명령을 실행하여 CLI 및 플러그인을 설치합니다.
 
+``` bash
+curl -sL https://ibm.biz/idt-installer | bash
+```
+
 IBM Cloud account에 로그인 합니다.
 
 ``` bash
-curl -sL https://ibm.biz/idt-installer | bash
+ibmcloud login
 ```
 
 IBM Cloud 컨테이너의 서비스 지역을 지정합니다.
@@ -246,9 +250,9 @@ Spring PetClinic은 배포된 Service를 nginx를 이용하여 접근하는 방�
 다음 명령을 실행하여 Nginx Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f ./nginx/nginx-configmap.yaml
-kubectl create -f ./nginx/nginx-service.yaml
-kubectl create -f ./nginx/nginx.yaml
+kubectl create -f ./k8s/nginx/nginx-configmap.yaml
+kubectl create -f ./k8s/nginx/nginx-service.yaml
+kubectl create -f ./k8s/nginx/nginx.yaml
 ```
 
 다음 명령을 이용하여 worker node의 EXTERNAL-IP를 확인 합니다.

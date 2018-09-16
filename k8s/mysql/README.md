@@ -35,7 +35,7 @@ echo -n "petclinic" > ./password
 
 ``` bash
 kubectl create secret generic mysql-credential --from-file=./username --from-file=./password
-delete ./username ./password
+rm ./username ./password
 ```
 
 ``` bash
