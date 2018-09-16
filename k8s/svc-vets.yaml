@@ -10,7 +10,7 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 8080
-      nodePort: 32001
+      nodePort: 32005
   selector:
     app: spring-petclinic
     tier: vets
