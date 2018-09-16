@@ -19,7 +19,10 @@ spec:
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
-          value: petclinic
+          valueFrom:
+          secretKeyRef:
+            name: mysql-credential
+            key: password
         - name: MYSQL_DATABASE
           value: petclinic
         ports:
