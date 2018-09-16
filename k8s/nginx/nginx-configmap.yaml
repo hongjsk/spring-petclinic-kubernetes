@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx
+  labels:
+    app: spring-petclinic
+data:
+  nginx.conf: |
+    worker_processes 5;
+    events {
+    }
+    http {
+      server {
+        listen 80;
+        location / {
+          proxy_pass http://api-gateway/;
+        }
+        location /api/vet {
+          proxy_pass http://vets-service/;
+        }
+        location /api/visit {
+          proxy_pass http://visits-service/;
+        }
+        location /api/customer {
+          proxy_pass http://customers-service/;
+        }
+        location /api/gateway {
+          proxy_pass http://api-gateway/;
+        }
+      } 
+    }

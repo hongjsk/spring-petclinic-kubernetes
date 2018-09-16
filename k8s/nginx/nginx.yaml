@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: spring-petclinic
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+        tier: nginx
+    spec:
+      volumes:
+      - name: nginx
+        configMap:
+          name: nginx
+      containers:
+      - image: nginx:1.10-alpine
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        volumeMounts:
+        - name: nginx
+          mountPath: /etc/nginx
+          readOnly: true
