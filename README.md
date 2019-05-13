@@ -267,4 +267,4 @@ nginx는 NodePort 32010을 이용하므로 웹 브라우저를 실행하여 다�
 
 ### Helm Chart를 이용한 nginx 패키지 배포
 
-만약 Helm Chart를 이용한 패키지 방식으로 배포하려면 Practical.md#helm-install 링크를 참고 하시기 바랍니다.
+만약 Helm Chart를 이용한 패키지 방식으로 배포하려면 Practical.md 파일의 [Helm Install](Practical.md#helm-install) 항목을 참고 하시기 바랍니다.
