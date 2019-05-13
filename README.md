@@ -243,7 +243,7 @@ kubectl create -f ./k8s/ingress.yaml
 
 무료 클러스터의 경우 Node의 Public IP 정보를 직접 입력하고 클러스터 외부에서 서비스로 접근하려면 Node Port 방식을 이용합니다.
 
-Spring PetClinic은 배포된 Service를 nginx를 이용하여 접근하는 방식을 이용합니다.
+Spring PetClinic으로 배포된 Service를 nginx를 이용하여 접근하는 방식인데, 다음과 같이 [Nginx Deployment & Service 생성](#nginx-deployment---service-생성)를 생성하거나 [Helm Chart를 이용한 nginx 패키지 배포](#helm-chart를-이용한-nginx-패키지-배포) 방식 중 하나를 선택 할 수 있습니다.
 
 ### Nginx Deployment & Service 생성
 
@@ -264,3 +264,7 @@ $ kubectl get nodes -o wide
 nginx는 NodePort 32010을 이용하므로 웹 브라우저를 실행하여 다음과 같은 URL에 접근합니다.
 
 > http://\<EXTERNAL-IP\>:32010/
+
+### Helm Chart를 이용한 nginx 패키지 배포
+
+만약 Helm Chart를 이용한 패키지 방식으로 배포하려면 Practical.md#helm-install 링크를 참고 하시기 바랍니다.
