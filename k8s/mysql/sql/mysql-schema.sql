@@ -1,9 +1,6 @@
 CREATE DATABASE IF NOT EXISTS petclinic;
---GRANT ALL PRIVILEGES ON petclinic.* TO pc@localhost IDENTIFIED BY 'pc';
 
 USE petclinic;
-
---- customer
 
 CREATE TABLE IF NOT EXISTS types (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -32,8 +29,6 @@ CREATE TABLE IF NOT EXISTS pets (
   FOREIGN KEY (type_id) REFERENCES types(id)
 ) engine=InnoDB;
 
---- visits
-
 CREATE TABLE IF NOT EXISTS visits (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   pet_id INT(4) UNSIGNED NOT NULL,
@@ -41,8 +36,6 @@ CREATE TABLE IF NOT EXISTS visits (
   description VARCHAR(8192),
   FOREIGN KEY (pet_id) REFERENCES pets(id)
 ) engine=InnoDB;
-
---- vets
 
 CREATE TABLE IF NOT EXISTS vets (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
