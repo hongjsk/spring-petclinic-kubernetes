@@ -55,6 +55,12 @@ IKS는 IBM Cloud의 서비스로서 IBM Cloud CLI를 이용하여 정보를 확�
 curl -sL https://ibm.biz/idt-installer | bash
 ```
 
+만약, Windows 10 Pro 환경에서는 Windows PowerShell을 이용 할 수 있습니다. 시작 메뉴에서 `PowerShell`을 검색하여 파일을 찾은 후, 해당 파일을 마우스로 오른쪽 클릭하여 `관리자 권한`으로 실행합니다. 그리고, 다음과 같은 명령을 실행합니다.
+
+``` bash
+Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('http://ibm.biz/idt-win-installer')
+```
+
 IBM Cloud account에 로그인 합니다.
 
 ``` bash
