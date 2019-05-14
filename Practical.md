@@ -12,7 +12,10 @@ chmod 700 ~/get_helm.sh
 * https://github.com/kubernetes/ingress-nginx
 
 ```
-helm init
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
+helm init --service-account tiller --upgrade
 kubectl get nodes -o wide
 EXTERNAL_IP=$(kubectl get nodes -o jsonpath='{..addresses[?(@.type=="ExternalIP")].address}')
 helm install stable/nginx-ingress --name=nginx-ingress --namespace=kube-system --set rbac.create=true --set controller.service.externalIPs="{$EXTERNAL_IP}"
