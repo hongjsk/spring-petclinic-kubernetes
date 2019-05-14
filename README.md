@@ -85,6 +85,12 @@ ibmcloud cs cluster-config <CLUSTER_NAME>
 export KUBECONFIG=/Users/$USER/.bluemix/plugins/container-service/clusters/<CLUSTER_NAME>/kube-config-<DC_ZONE_NAME>-<CLUSTER_NAME>.yml
 ```
 
+Windows 환경에서는 다음과 같습니다.
+
+``` bash
+export KUBECONFIG=%HOMEPATH%\.bluemix\plugins\container-service\clusters\<CLUSTER_NAME>\kube-config-<DC_ZONE_NAME>-<CLUSTER_NAME>.yml
+```
+
 환경 설정이 되었다면 Worker 노드 정보를 확인합니다.
 
 ``` bash
