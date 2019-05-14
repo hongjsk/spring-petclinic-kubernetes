@@ -123,3 +123,9 @@ kubectl cp sql/mysql-data.sql mysql-client:/tmp/
 mysql -u root -p petclinic < /tmp/mysql-schema.sql
 mysql -u root -p petclinic petclinic < /tmp/mysql-data.sql
 ```
+
+실제 정상적으로 데이터가 들어갔는지 다음과 같이 확인합니다.
+
+``` bash
+mysql -u root -p petclinic -e 'select * from vets' petclinic
+```
