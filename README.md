@@ -133,11 +133,15 @@ echo -n "root" > ./username
 echo -n "petclinic" > ./password
 ```
 
-`kubectl create secret` 명령으로 `mysql-credential` Secret을 생성 후 `username`과 `password` 파일은 삭제합니다. 
+`kubectl create secret` 명령으로 `mysql-credential` Secret을 생성합니다. 
 
 ``` bash
 kubectl create secret generic mysql-credential --from-file=./username --from-file=./password
 ```
+
+참고로, `username`과 `password` 파일은 보안에 위협이 되므로 삭제해 주어야 합니다.
+
+생성한 secret 정보를 확인하면 다음과 같습니다.
 
 ``` bash
 kubectl get secret/mysql-credential -o yaml
