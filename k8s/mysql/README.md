@@ -104,5 +104,14 @@ customers-service | spring-petclinic-customers-service/src/main/resources/db/mys
 visits-service    | spring-petclinic-visits-service/src/main/resources/db/mysql/data.sql
 vets-service      | spring-petclinic-vets-service/src/main/resources/db/mysql/data.sql
 
-각각의 SQL 파일을 실행하여 테이블 및 데이터를 입력해 주어야 합니다만, [./sql/schema.sql](./sql/schema.sql) 및 [./sql/data.sql](./sql/data.sql)에 필요한 정보를 모아 놓았으므로 이를 이용할 수 있습니다. SQL 실행은 선호하는 SQL Client 또는 Open Source GUI Client인 [DBeaver](https://dbeaver.io/)를 이용하면 편리합니다.
+각각의 SQL 파일을 실행하여 테이블 및 데이터를 입력해 주어야 합니다만, [./sql/mysql-schema.sql](./sql/mysql-schema.sql) 및 [./sql/mysql-data.sql](./sql/mysql-data.sql)에 필요한 정보를 모아 놓았으므로 이를 이용할 수 있습니다. SQL 실행은 선호하는 SQL Client 또는 Open Source GUI Client인 [DBeaver](https://dbeaver.io/)를 이용할 수 있으며 kubernetes로 MySQL CLI를 이용 할 수도 있습니다.
+
+``` bash
+kubectl run -it --rm --image=mysql:5.7.8 --restart=Never mysql-cli -- bash
+```
+
+``` bash
+kubectl cp sql/mysql-schema.sql mysql-client:/tmp/
+```
+
 
