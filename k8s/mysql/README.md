@@ -120,12 +120,27 @@ kubectl cp sql/mysql-data.sql mysql-client:/tmp/
 앞서 실행한 mysql-cli가 실행 중인 터미널에서 다음과 같이 SQL을 로딩합니다.
 
 ``` bash
-mysql -u root -p petclinic < /tmp/mysql-schema.sql
-mysql -u root -p petclinic petclinic < /tmp/mysql-data.sql
+mysql -h mysql -u root -ppetclinic < /tmp/mysql-schema.sql
+mysql -h mysql -u root -ppetclinic petclinic < /tmp/mysql-data.sql
 ```
 
 실제 정상적으로 데이터가 들어갔는지 다음과 같이 확인합니다.
 
 ``` bash
-mysql -u root -p petclinic -e 'select * from vets' petclinic
+mysql -h mysql -u root -ppetclinic -e 'select * from vets' petclinic
+```
+
+실행 결과가 아래와 같이 출력되면 정상적으로 생성된 것입니다.
+
+```
++----+------------+-----------+
+| id | first_name | last_name |
++----+------------+-----------+
+|  1 | James      | Carter    |
+|  2 | Helen      | Leary     |
+|  3 | Linda      | Douglas   |
+|  4 | Rafael     | Ortega    |
+|  5 | Henry      | Stevens   |
+|  6 | Sharon     | Jenkins   |
++----+------------+-----------+
 ```
