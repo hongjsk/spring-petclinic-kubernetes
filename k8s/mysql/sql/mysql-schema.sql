@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS petclinic;
 
 USE petclinic;
 
---- cusomter
+--- customer
 
 CREATE TABLE IF NOT EXISTS types (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
