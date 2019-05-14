@@ -55,7 +55,7 @@ IKS는 IBM Cloud의 서비스로서 IBM Cloud CLI를 이용하여 정보를 확�
 curl -sL https://ibm.biz/idt-installer | bash
 ```
 
-만약, Windows 10 Pro 환경에서는 Windows PowerShell을 이용 할 수 있습니다. 시작 메뉴에서 `PowerShell`을 검색하여 파일을 찾은 후, 해당 파일을 마우스로 오른쪽 클릭하여 `관리자 권한`으로 실행합니다. 그리고, 다음과 같은 명령을 실행합니다.
+Windows 10 Pro 환경에서는 Windows PowerShell을 이용 할 수 있습니다. 시작 메뉴에서 `PowerShell`을 검색하여 파일을 찾은 후, 해당 파일을 마우스로 오른쪽 클릭하여 `관리자 권한`으로 실행합니다. 그리고, 다음과 같은 명령을 실행합니다.
 
 ``` bash
 Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('http://ibm.biz/idt-win-installer')
@@ -85,10 +85,16 @@ ibmcloud cs cluster-config <CLUSTER_NAME>
 export KUBECONFIG=/Users/$USER/.bluemix/plugins/container-service/clusters/<CLUSTER_NAME>/kube-config-<DC_ZONE_NAME>-<CLUSTER_NAME>.yml
 ```
 
-Windows 환경에서는 다음과 같습니다.
+Windows 터미널 환경에서는 다음과 같습니다.
 
 ``` bash
 SET KUBECONFIG=%HOMEPATH%\.bluemix\plugins\container-service\clusters\<CLUSTER_NAME>\kube-config-<DC_ZONE_NAME>-<CLUSTER_NAME>.yml
+```
+
+만약, Windows PowerShell을 이용하는 경우는 다음과 같습니다.
+
+``` bash
+$env:KUBECONFIG=$env:HOMEPATH+'\.bluemix\plugins\container-service\clusters\<CLUSTER_NAME>\kube-config-<DC_ZONE_NAME>-<CLUSTER_NAME>.yml'
 ```
 
 환경 설정이 되었다면 Worker 노드 정보를 확인합니다.
