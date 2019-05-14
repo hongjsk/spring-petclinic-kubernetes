@@ -144,3 +144,9 @@ mysql -h mysql -u root -ppetclinic -e 'select * from vets' petclinic
 |  6 | Sharon     | Jenkins   |
 +----+------------+-----------+
 ```
+
+`exit` 명령으로 CLI를 종료합니다.
+
+``` bash
+exit
+```
