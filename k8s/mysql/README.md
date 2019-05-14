@@ -120,6 +120,6 @@ kubectl cp sql/mysql-data.sql mysql-client:/tmp/
 앞서 실행한 mysql-cli가 실행 중인 터미널에서 다음과 같이 SQL을 로딩합니다.
 
 ``` bash
-mysql -u root -p petclinic < mysql-schema.sql
-mysql -u root -p petclinic petclinic < mysql-data.sql
+mysql -u root -p petclinic < /tmp/mysql-schema.sql
+mysql -u root -p petclinic petclinic < /tmp/mysql-data.sql
 ```
