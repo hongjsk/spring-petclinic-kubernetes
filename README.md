@@ -189,8 +189,7 @@ valueFrom:
 다음 명령을 실행하여 API 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/deploy-api.yaml
-kubectl create -f k8s/svc-api.yaml
+kubectl create -f k8s/api.yaml
 ```
 
 ### Customers 마이크로 서비스 생성하기
@@ -198,8 +197,7 @@ kubectl create -f k8s/svc-api.yaml
 다음 명령을 실행하여 Customers 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/deploy-customers.yaml
-kubectl create -f k8s/svc-customers.yaml
+kubectl create -f k8s/customers.yaml
 ```
 
 ### Vets 마이크로 서비스 생성하기
@@ -207,8 +205,7 @@ kubectl create -f k8s/svc-customers.yaml
 다음 명령을 실행하여 Vets 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/deploy-vets.yaml
-kubectl create -f k8s/svc-vets.yaml
+kubectl create -f k8s/vets.yaml
 ```
 
 ### Visits 마이크로 서비스 생성하기
@@ -216,8 +213,7 @@ kubectl create -f k8s/svc-vets.yaml
 다음 명령을 실행하여 Visits 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/deploy-visits.yaml
-kubectl create -f k8s/svc-visits.yaml
+kubectl create -f k8s/visits.yaml
 ```
 
 ### 배포 상태 확인

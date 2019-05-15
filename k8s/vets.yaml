@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: customers
+  name: vets
   labels:
     app: spring-petclinic
 spec:
@@ -11,12 +11,12 @@ spec:
     metadata:
       labels:
         app: spring-petclinic
-        tier: customers
+        tier: vets
     spec:
       containers:
-        - image: hongjs/spring-petclinic-customers-service:latest
+        - image: hongjs/spring-petclinic-vets-service:latest
           imagePullPolicy: Always
-          name: customers
+          name: vets
           ports:
             - containerPort: 8080
           env:
@@ -35,3 +35,20 @@ spec:
               secretKeyRef:
                 name: mysql-credential
                 key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vets-service
+  labels:
+    app: spring-petclinic
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 32005
+  selector:
+    app: spring-petclinic
+    tier: vets
