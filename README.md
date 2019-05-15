@@ -109,11 +109,11 @@ kubectl get nodes
 
 Spring PetClinic은 HSQL과 MySQL DB 두가지 저장소에 대해 구성 가능하지만, 본 예제에서는 MySQL만 지원하도록 합니다. MySQL DB는 IBM Cloud에서 접속가능한 Instance 이어야 합니다. 사전에 MySQL DB가 준비되었다면 [MySQL 호스트 서버 및 포트 정보 입력하기](#mysql-호스트-서버-및-포트-정보-입력하기) 항목으로 이동합니다.
 
-만약 준비하지 못하는 경우 다음과 같은 [Kubernetes 클러스터에서 MySQL을 배포하는 방법](./k8s/mysql/README.md)을 이용 할 수 있습니다.
+만약 준비하지 못하는 경우 다음과 같은 [Kubernetes 클러스터에 MySQL을 배포하는 방법](MySQL.md)을 이용 할 수 있습니다.
 
 ### MySQL 호스트 서버 및 포트 정보 입력하기
 
-본 예제에서는 [./k8s/configmap.yaml](k8s/configmap.yaml) 파일에 MySQL 서버 호스트 및 포트 번호가 입력되어 있습니다. 기본적으로 Kubernetes 클러스터에 생성한 MySQL 서버로 연결하도록 되어 있으므로, 만약 외부 DB 서버를 사용하는 경우 해당 정보를 변경하도록 합니다. 그리고, 다음 명령을 이용하여 ConfigMap 을 생성합니다.
+본 예제에서는 [k8s/configmap.yaml](k8s/configmap.yaml) 파일에 MySQL 서버 호스트 및 포트 번호가 입력되어 있습니다. 기본적으로 Kubernetes 클러스터에 생성한 MySQL 서버로 연결하도록 되어 있으므로, 만약 외부 DB 서버를 사용하는 경우 해당 정보를 변경하도록 합니다. 그리고, 다음 명령을 이용하여 ConfigMap 을 생성합니다.
 
 ``` bash
 kubectl create -f k8s/configmap.yaml
@@ -129,14 +129,14 @@ mysql 사용자와 비밀번호는 ConfigMap이 아닌 Secret으로 입력합니
 
 ``` bash
 # Create files needed for rest of example.
-echo -n "root" > ./username
-echo -n "petclinic" > ./password
+echo -n "root" > username
+echo -n "petclinic" > password
 ```
 
 `kubectl create secret` 명령으로 `mysql-credential` Secret을 생성합니다. 
 
 ``` bash
-kubectl create secret generic mysql-credential --from-file=./username --from-file=./password
+kubectl create secret generic mysql-credential --from-file=username --from-file=password
 ```
 
 참고로, `username`과 `password` 파일은 보안에 위협이 되므로 삭제해 주어야 합니다.
@@ -189,8 +189,8 @@ valueFrom:
 다음 명령을 실행하여 API 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f ./k8s/deploy-api.yaml
-kubectl create -f ./k8s/svc-api.yaml
+kubectl create -f k8s/deploy-api.yaml
+kubectl create -f k8s/svc-api.yaml
 ```
 
 ### Customers 마이크로 서비스 생성하기
@@ -198,8 +198,8 @@ kubectl create -f ./k8s/svc-api.yaml
 다음 명령을 실행하여 Customers 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f ./k8s/deploy-customers.yaml
-kubectl create -f ./k8s/svc-customers.yaml
+kubectl create -f k8s/deploy-customers.yaml
+kubectl create -f k8s/svc-customers.yaml
 ```
 
 ### Vets 마이크로 서비스 생성하기
@@ -207,8 +207,8 @@ kubectl create -f ./k8s/svc-customers.yaml
 다음 명령을 실행하여 Vets 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f ./k8s/deploy-vets.yaml
-kubectl create -f ./k8s/svc-vets.yaml
+kubectl create -f k8s/deploy-vets.yaml
+kubectl create -f k8s/svc-vets.yaml
 ```
 
 ### Visits 마이크로 서비스 생성하기
@@ -216,8 +216,8 @@ kubectl create -f ./k8s/svc-vets.yaml
 다음 명령을 실행하여 Visits 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f ./k8s/deploy-visits.yaml
-kubectl create -f ./k8s/svc-visits.yaml
+kubectl create -f k8s/deploy-visits.yaml
+kubectl create -f k8s/svc-visits.yaml
 ```
 
 ### 배포 상태 확인
@@ -225,7 +225,10 @@ kubectl create -f ./k8s/svc-visits.yaml
 다음 명령을 실행하여 마이크로 서비스들이 정상적으로 배포 되었는지 확인 하십시오
 
 ``` bash
-$ kubectl get pods -o=wide
+kubectl get pods -o=wide
+```
+
+``` bash
 NAME                           READY     STATUS    RESTARTS   AGE       IP              NODE
 api-gateway-745db58c94-zdwfb   1/1       Running   0          1h        xxx.xxx.xxx.16   xxx.xxx.xxx.247
 customers-77b6c4784f-tp8gn     1/1       Running   0          1h        xxx.xxx.xxx.20   xxx.xxx.xxx.247
@@ -235,7 +238,10 @@ visits-7f97889974-psmsh        1/1       Running   0          1h        xxx.xxx.
 ```
 
 ``` bash
-$ kubectl get svc
+kubectl get svc
+```
+
+``` bash
 NAME                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 api-gateway         NodePort    xxx.xxx.xxx.104   <none>        80:32002/TCP     1h
 customers-service   NodePort    xxx.xxx.xxx.63    <none>        80:32003/TCP     1h
@@ -250,7 +256,7 @@ visits-service      NodePort    xxx.xxx.xxx.196   <none>        80:32004/TCP    
 정상적으로 배포되었다면 다음 명령으로 Ingress 를 생성합니다.
 
 ``` bash
-kubectl create -f ./k8s/ingress.yaml
+kubectl create -f k8s/ingress.yaml
 ```
 
 ## 웹 브라우저로 확인
@@ -271,15 +277,15 @@ Spring PetClinic으로 배포된 Service를 nginx를 이용하여 접근하는 �
 다음 명령을 실행하여 Nginx Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f ./k8s/nginx/nginx-configmap.yaml
-kubectl create -f ./k8s/nginx/nginx-service.yaml
-kubectl create -f ./k8s/nginx/nginx.yaml
+kubectl create -f k8s/nginx/nginx-configmap.yaml
+kubectl create -f k8s/nginx/nginx-service.yaml
+kubectl create -f k8s/nginx/nginx.yaml
 ```
 
 다음 명령을 이용하여 worker node의 EXTERNAL-IP를 확인 합니다.
 
 ``` bash
-$ kubectl get nodes -o wide
+kubectl get nodes -o wide
 ```
 
 nginx는 NodePort 32010을 이용하므로 웹 브라우저를 실행하여 다음과 같은 URL에 접근합니다.
