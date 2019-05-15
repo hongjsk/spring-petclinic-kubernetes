@@ -180,48 +180,31 @@ kubectl cp k8s/mysql/sql/mysql-schema.sql <MYSQL_POD_NAME>:/tmp/
 kubectl cp k8s/mysql/sql/mysql-data.sql <MYSQL_POD_NAME>:/tmp/
 ```
 
-이제 `kubectl exec` 명령을 이용하여 mysql pod의 bash로 진입합니다.
+이제 `kubectl exec` 명령을 이용하여 mysql pod에 Database Schema와 Table을 생성합니다.
 
 ``` bash
-kubectl exec -it <MYSQL_POD_NAME> -- bash
+kubectl exec <MYSQL_POD_NAME> -- sh -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD petclinic < /tmp/mysql-schema.sql'
+kubectl exec <MYSQL_POD_NAME> -- sh -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD petclinic < /tmp/mysql-data.sql'
 ```
 
-그러면, 다음과 같이 `root` 계정으로 실행 중인 MySQL Container의 Shell로 진입한 것을 알 수 있습니다.
+다음 명령으로 실제 정상적으로 데이터가 들어갔는지 다음 명령으로 확인합니다.
 
 ``` bash
-root@<MYSQL_POD_NAME>:/# 
-```
-
-참고로, Windows 환경에서 git bash를 사용하시는 분들은 위 명령 실행 시 오류가 발생할 수 있습니다. 위 명령은 Windows 내장 `터미널`이나 `PowerShell`을 새로 열고 KUBECONFIG 환경 설정을 한 후 kubectl을 실행해야 합니다. 
-
-MySQL bash에서 다음과 같이 SQL을 로딩합니다.
-
-``` bash
-mysql -h mysql -u root -ppetclinic < /tmp/mysql-schema.sql
-mysql -h mysql -u root -ppetclinic petclinic < /tmp/mysql-data.sql
-```
-
-실제 정상적으로 데이터가 들어갔는지 다음 명령으로 확인합니다.
-
-``` bash
-mysql -h mysql -u root -ppetclinic -e 'select * from vets' petclinic
+kubectl exec <MYSQL_POD_NAME> -- sh -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD -e "select * from vets" petclinic'
 ```
 
 실행 결과가 아래와 같이 출력되면 정상적으로 생성된 것입니다.
 
 ```
-root@<MYSQL_POD_NAME>:/# mysql -h mysql -ppetclinic -e 'select * from vets' petclinic
 mysql: [Warning] Using a password on the command line interface can be insecure.
-+----+------------+-----------+
-| id | first_name | last_name |
-+----+------------+-----------+
-|  1 | James      | Carter    |
-|  2 | Helen      | Leary     |
-|  3 | Linda      | Douglas   |
-|  4 | Rafael     | Ortega    |
-|  5 | Henry      | Stevens   |
-|  6 | Sharon     | Jenkins   |
-+----+------------+-----------+
+id	first_name	last_name
+1 James	Carter
+2	Helen	Leary
+3	Linda	Douglas
+4	Rafael	Ortega
+5	Henry	Stevens
+6	Sharon	Jenkins
+mysql: [Warning] Using a password on the command line interface can be insecure.
 ```
 
 `exit` 명령으로 CLI를 종료합니다.
