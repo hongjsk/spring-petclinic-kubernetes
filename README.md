@@ -184,6 +184,10 @@ valueFrom:
     key: password
 ```
 
+### Container Image 생성 (선택 사항)
+
+본 튜토리얼에 사용되는 이미지는 사전에 만들어 놓은 이미지를 이용합니다. 만약, 여러분이 직접 생성하고자 하는 경우 [Container Image 생성 가이드 문서](DockerBuild.md)를 참고하여 이미지를 생성 후 아래 서비스를 생성하시기 바랍니다.
+
 ### API 마이크로 서비스 생성하기
 
 다음 명령을 실행하여 API 마이크로 서비스 Deployment와 Service를 생성합니다.

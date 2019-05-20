@@ -1,2 +1,2 @@
 #!/bin/sh
-docker build . -t hongjs/spring-petclinic-visits-service
+docker build . -t hongjs/spring-petclinic-visits-service:latest
