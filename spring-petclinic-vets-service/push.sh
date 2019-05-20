@@ -1,2 +1,2 @@
 #!/bin/sh
-docker push hongjs/spring-petclinic-vets-service:latest
+docker push hongjs/spring-petclinic-vets-service:openjdk8

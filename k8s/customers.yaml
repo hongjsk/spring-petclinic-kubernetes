@@ -14,7 +14,7 @@ spec:
         tier: customers
     spec:
       containers:
-        - image: hongjs/spring-petclinic-customers-service:latest
+        - image: hongjs/spring-petclinic-customers-service:openjdk8
           imagePullPolicy: Always
           name: customers
           ports:

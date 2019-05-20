@@ -1,2 +1,2 @@
 #!/bin/sh
-docker build . -t hongjs/spring-petclinic-api-gateway:latest
+docker build . -t hongjs/spring-petclinic-api-gateway:openjdk8

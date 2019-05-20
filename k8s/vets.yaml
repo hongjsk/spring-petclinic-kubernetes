@@ -14,7 +14,7 @@ spec:
         tier: vets
     spec:
       containers:
-        - image: hongjs/spring-petclinic-vets-service:latest
+        - image: hongjs/spring-petclinic-vets-service:openjdk8
           imagePullPolicy: Always
           name: vets
           ports:

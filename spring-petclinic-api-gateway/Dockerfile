@@ -1,8 +1,8 @@
-FROM java:8
+FROM openjdk:8-jre-alpine
 VOLUME /tmp
 ADD target/spring-petclinic-api-gateway-1.5.9.jar /app.jar
 #ENV SPRING_PROFILES_ACTIVE docker
-RUN bash -c 'touch /app.jar'
+RUN sh -c 'touch /app.jar'
 
 # Expose
 EXPOSE 8080
