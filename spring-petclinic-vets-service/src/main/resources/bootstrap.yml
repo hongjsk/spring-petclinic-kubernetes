@@ -10,3 +10,13 @@ spring:
   cloud:
     config:
       uri: http://config-server:8888
+---
+spring:
+  profiles: mysql
+  datasource:
+    schema: classpath*:db/mysql/schema.sql
+    data: classpath*:db/mysql/data.sql
+    url: jdbc:mysql://${MYSQL_HOSTINFO}:3306/petclinic?useSSL=false
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    initialization-mode: ALWAYS

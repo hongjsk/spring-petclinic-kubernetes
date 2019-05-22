@@ -13,17 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.monitoring;
+package org.springframework.samples.petclinic.api.dto;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Maciej Szarlinski
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Monitored {
+@Data
+public class PetDetails {
+
+    private int id;
+
+    private String name;
+
+    private String birthDate;
+
+    private PetType type;
+
+    private final List<VisitDetails> visits = new ArrayList<>();
+
 }

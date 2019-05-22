@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.api.application;
+package org.springframework.samples.petclinic.api.dto;
 
-import lombok.Data;
+import java.util.List;
+
+import lombok.NoArgsConstructor;
+import lombok.Value;
 
 /**
  * @author Maciej Szarlinski
  */
-@Data
-public class PetType {
+@Value
+@NoArgsConstructor
+public class Visits {
 
-    private final String name;
+    private List<VisitDetails> items = null;
+
 }

@@ -35,6 +35,8 @@ spec:
               secretKeyRef:
                 name: mysql-credential
                 key: password
+          - name: spring.profiles.active
+            value: mysql
 ---
 apiVersion: v1
 kind: Service
