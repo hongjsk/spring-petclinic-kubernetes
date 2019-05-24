@@ -4,22 +4,6 @@ Spring PetClinic Kuberentes는 Spring Boot, Spring Cloud 그리고 Netflix OSS �
 
 Spring PetClinic Microservice의 경우 Local 서버에서 실행하거나 Docker를 이용할 수 있습니다. 그리고, 애플리케이션을 마이크로 서비스 아키텍쳐로 구성하기 위해 Netflix Eureka, Slueth, Zipkin 그리고 Hystrix 등을 이용합니다. 이런 서비스를 Kuberentes에 배포하여 사용 할 수 있지만 필요한 기능의 대부분을 Kubernetes 기본 기능에서 제공하므로 최대한 단순하게 Spring Boot만 남기고 나머지 모듈에 대한 의존성을 제거하여 실행합니다.
 
-## 사전 준비 사항
-
-기본적인 개발 환경을 준비해야 합니다.
-
-1. [Docker 설치](https://docs.docker.com/install/)
-1. [DockerHub 계정](https://hub.docker.com/)
-1. [Apache Maven 설치](https://maven.apache.org/install.html)
-1. [JDK(AdoptOpenJDK) 설치](https://adoptopenjdk.net/)
-1. [Kubernetes CLI 설치]()
-1. Kubernetes Cluster 구성 (IBM Cloud Kubernetes 서비스 등)
-
-
-## 소요 시간
-
-이 튜토리얼을 완료하기까지 대략 15분 정도가 소요됩니다.
-
 ## 단계
 
 ### 하위 모듈 제거
