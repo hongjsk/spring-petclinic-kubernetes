@@ -221,7 +221,7 @@ data:
 * [k8s/api-gateway.yaml](k8s/api-gateway.yaml)
 * [k8s/customers-service.yaml](k8s/customers-service.yaml)
 * [k8s/vets-service.yaml](k8s/vets-service.yaml)
-* [k8s/visits-service.yaml](k8s/visits-service.yaml)k8s/visits.yaml
+* [k8s/visits-service.yaml](k8s/visits-service.yaml)
 
 
 ## 맺음말
