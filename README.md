@@ -123,8 +123,6 @@ kubectl create -f k8s/configmap.yaml
 
 Mysql 사용자와 비밀번호는 ConfigMap이 아닌 Secret으로 입력합니다. 파일에서 생성하기 위해 다음과 같이 입력합니다. 만약, MySQL을 Kubernetes 에서 생성했다면 [API 마이크로 서비스 생성하기](#api-마이크로-서비스-생성하기) 항목으로 이동하십시오.
 
-
-
 mysql 사용자와 비밀번호는 ConfigMap이 아닌 Secret으로 입력합니다. 파일에서 생성하기 위해 다음과 같이 입력합니다.
 
 ``` bash
@@ -193,7 +191,7 @@ valueFrom:
 다음 명령을 실행하여 API 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/api.yaml
+kubectl create -f k8s/api-gateway.yaml
 ```
 
 ### Customers 마이크로 서비스 생성하기
@@ -201,7 +199,7 @@ kubectl create -f k8s/api.yaml
 다음 명령을 실행하여 Customers 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/customers.yaml
+kubectl create -f k8s/customers-service.yaml
 ```
 
 ### Vets 마이크로 서비스 생성하기
@@ -209,7 +207,7 @@ kubectl create -f k8s/customers.yaml
 다음 명령을 실행하여 Vets 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/vets.yaml
+kubectl create -f k8s/vets-service.yaml
 ```
 
 ### Visits 마이크로 서비스 생성하기
@@ -217,7 +215,7 @@ kubectl create -f k8s/vets.yaml
 다음 명령을 실행하여 Visits 마이크로 서비스 Deployment와 Service를 생성합니다.
 
 ``` bash
-kubectl create -f k8s/visits.yaml
+kubectl create -f k8s/visits-service.yaml
 ```
 
 ### 배포 상태 확인

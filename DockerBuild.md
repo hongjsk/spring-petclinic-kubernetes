@@ -28,19 +28,41 @@ Spring PetClinic Kuberentes는 사전 배포된 Docker Image를 이용하여 컨
 
 [DockerHub](https://hub.docker.com/) 에 접속해 Docker 사용자 ID로 정상 로그인이 되는지 확인합니다.
 
+이제 Docker 사용자 ID를 pom.xml에 지정합니다. Build 명령으로 생성되는 이미지는 <DOCKER_HUB_ID>가 Container Registry Namespace가 되어 `<DOCKER_HUB_ID>/<IMAGE_REPOSITORY_NAME>:<TAG_NAME>` 형식으로 이미지 이름이 지정됩니다. 예를 들어 <DOCKER_HUB_ID>가  `hongjs`이고 이미지 이름이 `spring-petclinic-api-gateway`인 경우라면 `hongjs/spring-petclinic-api-gateway:latest`입니다.
+
+프로젝트 디렉토리의 [pom.xml](pom.xml) 파일 중 `docker.image.prefix` 항목을 사용자 ID로 수정 합니다.
+
+``` xml
+...
+<properties>
+    <java.version>1.8</java.version>
+    <assertj.version>3.11.1</assertj.version>
+
+    <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
+    <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+
+    <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+
+    <docker.image.prefix>hongjs</docker.image.prefix>
+    <docker.image.exposed.port>8080</docker.image.exposed.port>
+    <docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
+    <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
+    <docker.plugin.version>1.2.0</docker.plugin.version>
+</properties>
+...
+```
+
 ### 마이크로 서비스 빌드
 
-각 마이크로 서비스는 다음과 같은 디렉토리에서 Maven을 이용해 Build 할 수 있습니다.
-
-빌드가 정상적으로 진행되면 각각 `target`이란 이름의 하위 디렉토리가 생성되고 Build 절차를 통해 JAR 파일이 생성됩니다.
-
-예를 들어 API 마이크로 서비스의 경우 `spring-petclinic-api-gateway` 디렉토리로 이동 후 maven 명령을 실행 할 수 있습니다.
+각 마이크로 서비스는 Maven을 이용해 Build 할 수 있습니다.
 
 ``` bash
-cd spring-petclinic-api-gateway
-mvn clean
-mvn install
+mvn clean install -PbuildDocker
 ```
+
+빌드가 정상적으로 진행되면 각각 하위 모듈에 `target`이란 이름의 하위 디렉토리가 생성되고 Build 절차를 통해 JAR 파일과 함께 docker image가 생성됩니다.
+
+예를 들어 API Gateway 마이크로 서비스의 경우 `spring-petclinic-api-gateway` 디렉토리 아래 `target\spring-petclinic-api-gateway-x.x.x.jar` 파일이 생성됩니다.
 
 만약, 다음과 같이 JAVA_HOME이 정의되지 않았다고 나타나는 경우 JDK가 설치된 위치를 JAVA_HOME으로 지정해 주어야 합니다.
 
@@ -54,23 +76,26 @@ MacOS, Linux 인 경우는 다음 명령어로 JAVA_HOME 환경 변수를 설정
 export JAVA_HOME=$(/usr/libexec/java_home)
 ```
 
-Maven으로 빌드가 오류 없이 진행되었다면 `target` 디렉토리에 `spring-petclinic-api-gateway-1.5.9.jar` 파일이 생성된 것을 확인 할 수 있습니다.
-
-다른 마이크로 서비스도 마찬가지로 각 마이크로 서비스 디렉토리에서 maven으로 빌드를 하면 jar 파일이 생성됩니다.
-
-### Docker Image 생성
-
-이제 Docker CLI를 이용하여 Docker 이미지를 생성합니다. 이미지는 Docker Hub ID가 Container Registry Namespace가 되어 이미지는 `<DOCKER_HUB_ID>/<IMAGE_REPOSITORY_NAME>:<TAG_NAME>`가 됩니다. 예를 들어 ID가 hongjs이고 이미지 이름이 인 경우라면 `hongjs/spring-petclinic-api-gateway:openjdk8`입니다.
-
-앞서 마이크로 서비스와 같이 해당 디렉토리에서 다음과 같은 명령을 실행합니다.
+오류가 없었다면 Docker CLI 명령으로 이미지가 생성되어 있는 것을 확인 할 수 있습니다.
 
 ``` bash
-docker build . -t <DOCKER_HUB_ID>/spring-petclinic-api-gateway:openjdk8
+docker images
 ```
-오류가 없었다면 다음 명령으로 이미지가 생성되어 있는 것을 확인 할 수 있습니다.
+
+
+### 하위 모듈 독립 Build
+
+한 번에 Build 하게 되는 경우가 아니면 다음과 같이 하위 모듈 디렉토리로 이동 후 해당 모듈만 build 할 수 있습니다.
 
 ``` bash
-docker images <DOCKER_HUB_ID>/spring-petclinic-api-gateway
+cd spring-petclinic-api-gateway
+mvn clean install
+```
+
+그리고, Docker Image를 생성합니다.
+
+``` bash
+mvn docker:build -PbuildDocker
 ```
 
 ### Docker Image 배포
@@ -78,45 +103,15 @@ docker images <DOCKER_HUB_ID>/spring-petclinic-api-gateway
 다음 명령을 실행하여 생성한 이미지를 DockerHub에 배포합니다. 이렇게 배포되는 이미지는 DockerHub에 Public으로 배포되며 다른 사람들에게 공유될 수 있습니다. 만약, Private 저장소를 사용하는 경우 외부로 노출되지 않으며 Kubernetes Cluster에서 해당 저장소로 접근하기 위한 권한이 필요하게 됩니다.
 
 ``` bash
-docker push <DOCKER_HUB_ID>/spring-petclinic-api-gateway:openjdk8
+cd spring-petclinic-api-gateway
+mvn docker:push -PbuildDocker
 ```
 
-### 마이크로 서비스별 Kuberenetes Deployment YAML 파일 변경하기
-
-아래 파일들을 Spring PetClinic용 Deployment를 생성합니다.
-
-* k8s/api.yaml
-* k8s/customers.yaml
-* k8s/vets.yaml
-* k8s/visits.yaml
-
- 이 파일들에 정의된 `image` 항목 값을 변경합니다.
-
-``` yaml
-apiVersion: extensions/v1beta1
-kind: Deployment
-...
-    spec:
-      containers:
-        - image: <DOCKER_HUB_ID>/spring-petclinic-api-gateway:latest
-...
-```
-
-### 변경된 마이크로 서비스별 Kuberenetes Deployment YAML 배포 하기
-
-다음과 명령으로 마이크로 서비스를 배포합니다.
+혹은 Docker CLI를 직접 이용하는 방법으로 다음 명령을 이용 할 수도 있습니다.
 
 ``` bash
-kubectl apply -f k8s/api.yaml
-kubectl apply -f k8s/customers.yaml
-kubectl apply -f k8s/vets.yaml
-kubectl apply -f k8s/visits.yaml
+docker push <DOCKER_HUB_ID>/spring-petclinic-api-gateway:latest
 ```
-
-만약, 기존에 배포된 Deployment가 있고 변경사항이 있는 경우 새로운 정보로 업데이트가 진행됩니다. `kubectl get pods` 명령으로 기존 배포된 pod가 삭제되고 업데이트된 이미지로 새로운 pod가 생성되는지 확인 합니다.
-
-기존에 배포된 것이 없으면 신규로 생성됩니다.
-
 
 ## 맺음말
 
