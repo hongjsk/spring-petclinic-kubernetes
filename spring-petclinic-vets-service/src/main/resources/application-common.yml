@@ -1,0 +1,58 @@
+# COMMON APPLICATION PROPERTIES
+
+# start services on random port by default
+#server.port: 0
+server.port: 8080
+
+# embedded database init, supports mysql too trough the 'mysql' spring profile
+petclinic.database: hsqldb
+spring:
+  datasource:
+    schema: classpath*:db/hsqldb/schema.sql
+    data: classpath*:db/hsqldb/data.sql
+  sleuth:
+    sampler:
+      percentage: 1.0
+
+# JPA
+spring.jpa.hibernate.ddl-auto: none
+
+# Spring Boot 1.5 makes actuator secure by default
+management.security.enabled: false
+# Enable all Actuators and not only the two available by default /health and /info starting Spring Boot 2.0
+management.endpoints.web.exposure.include: "*"
+
+# Temporary hack required by the Spring Boot 2 / Spring Cloud Finchley branch
+# Waiting issue https://github.com/spring-projects/spring-boot/issues/13042
+spring.cloud.refresh.refreshable: false
+
+
+# Logging
+logging.level.org.springframework: INFO
+
+# Metrics
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+---
+spring:
+  profiles: mysql
+  datasource:
+    schema: classpath*:db/mysql/schema.sql
+    data: classpath*:db/mysql/data.sql
+    url: jdbc:mysql://${MYSQL_HOSTINFO}/petclinic?useSSL=false
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    initialization-mode: ALWAYS

@@ -10,7 +10,7 @@
 
     <parent>
         <groupId>org.springframework.samples</groupId>
-        <artifactId>spring-petclinic-microservices</artifactId>
+        <artifactId>spring-petclinic-kubernetes</artifactId>
         <version>2.1.4</version>
     </parent>
 

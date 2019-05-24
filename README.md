@@ -2,7 +2,7 @@
 
 이 애플리케이션의 코드는 [Spring PetClinic Microservices version](https://github.com/spring-petclinic/spring-petclinic-microservices)을 기반으로 작성되었습다. [Spring Cloud Netflix](https://github.com/spring-cloud/spring-cloud-netflix)를 이용하여 구성된 마이크로 서비스를 Kubernetes에서 실행하도록 몇 가지 의존성과 코드를 제거할 뿐 최대한 원본 코드를 유지한 형태로 구성하는 것을 목표로 구성되었습니다. 
 
-본 문서는 Kuberentes에서 실행 및 배포를 위한 내용에 대한 것을 설며하며  애플리케이션 마이그레이션에 대한 정보는 [migration.md](migration.md)를 참고 하시기 바랍니다.
+본 문서는 Kuberentes에서 실행 및 배포를 위한 내용에 대한 것을 설명하며  애플리케이션 마이그레이션에 대한 정보는 [Migration.md](Migration.md)를 참고 하시기 바랍니다.
 
 애플리케이션 빌드 및 배포는 다음과 같은 단계로 진행 합니다.
 
