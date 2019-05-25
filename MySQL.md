@@ -90,7 +90,7 @@ kubectl create -f k8s/mysql/mysql.yaml
 kubectl create -f k8s/mysql/mysql-service.yaml
 ```
 
-## MySQL 테이블 생성 및 초기 데이터 입력
+## MySQL 테이블 생성 및 초기 데이터 입력 (선택 사항)
 
 Spring PetClinic은 `petclinic` 이라는 이름의 DB를 사용하며 다음과 같은 테이블 스키마 및 데이터가 필요합니다.
 
