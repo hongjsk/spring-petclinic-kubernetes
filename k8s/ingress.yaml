@@ -6,7 +6,7 @@ metadata:
   name: api-ingress
 spec:
   rules:
-  - host: springcamp.jp-tok.containers.mybluemix.net
+  - host: springcamp2018.seo01.containers.appdomain.cloud
     http:
       paths:
       - path: /
