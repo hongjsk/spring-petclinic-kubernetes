@@ -32,9 +32,9 @@ IKS를 이용하려면 먼저 IBM Cloud 계정이 필요합니다. 만약, 회�
 
 생성 할 수 있는 클러스터 종류는 Free와 Standard가 있습니다. Free 클러스터는 미국 Dallas와 호주 Melbourne 중 한 곳을 선택하여 무료로 1개를 생성할 수 있습니다. 무료 클러스터는 2 CPUs, 4 GB RAM, 1 Worker Node로 구성되며 30일 동안 사용할 수 있으며 일부 기능 사용에 제한적입니다. 표준 클러스터와 차이점은 [무료 및 표준 클러스터 비교](https://console.bluemix.net/docs/containers/cs_why.html#cluster_types)을 참고 하시기 바랍니다.
 
-이 예제는 고성능 클러스터가 필요한 것은 아니지만, 한국 데이터 센터를 선택 할 수 있고 Ingress 서비스를 사용이 가능한 장점이 있어 유료 클러스터를 기준으로 설명하고 있습니다. 제일 2x4 Shared 플랜에서 1개 instance만 사용하는 경우 1시간에 133KRW 정도의 비용이 발생합니다. 추가적인 IKS 가격 정보는 [IBM Cloud Pricing Calculator](https://console.bluemix.net/pricing/configure/iaas/containers-kubernetes) 를 참고하시기 바랍니다.
+이 예제는 고성능 클러스터가 필요한 것은 아니지만, 한국 데이터 센터를 선택 할 수 있고 Ingress 서비스를 사용이 가능한 장점이 있어 유료 클러스터를 기준으로 설명하고 있습니다. 제일 저렴한 2코어 4GB 메모리의 Shared VM을 이용하여 1개의 Worker Node만 사용하는 경우 1시간에 133원 정도의 비용이 발생합니다. 추가적인 IKS 가격 정보는 [IBM Cloud Kubernetes 클러스터 생성하기](https://cloud.ibm.com/kubernetes/catalog/cluster/create)에서 예상 금액을 확인 할 수 있으니 이를 참고하시기 바랍니다.
 	
-표준 클러스터를 생성하면 해당 클러스트를 외부에서 접속 가능한 Ingress Subdomain 주소를 부여 받게 됩니다.
+표준 클러스터를 생성하면 해당 클러스터를 외부에서 접속 가능한 Ingress Subdomain 주소를 부여 받게 됩니다.
 
 > <CLUSTER_NAME>.<DC_ZONE_NAME>.containers.appdomain.cloud
 
@@ -182,7 +182,7 @@ visits-service      NodePort    xxx.xxx.xxx.196   <none>        80:32004/TCP    
 
 ### Ingress
 
-정상적으로 배포되었다면 다음 명령으로 Ingress 를 생성합니다.
+표준 클러스터인 경우 다음 명령으로 Ingress 를 생성합니다.
 
 ``` bash
 kubectl create -f k8s/ingress.yaml
@@ -190,10 +190,11 @@ kubectl create -f k8s/ingress.yaml
 
 ## 웹 브라우저로 확인
 
-웹 브라우저를 실행하여 Ingress URL에 접근합니다.
+표준 클러스터에 배포된 경우 웹 브라우저에서 Ingress URL을 통해 접근합니다.
 
 > http://<CLUSTER_NAME>.<DC_ZONE_NAME>.containers.appdomain.cloud/
 
+만약 무료 클러스터를 이용하는 경우 아래 [IKS 무료 클러스터를 이용하는 경우](#iks-무료-클러스터를-이용하는-경우)를 참고합니다.
 
 ## IKS 무료 클러스터를 이용하는 경우
 
