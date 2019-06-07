@@ -70,13 +70,13 @@ ibmcloud login
 IBM Cloud 컨테이너의 서비스 지역을 지정합니다.
 
 ``` bash
-ibmcloud cs region-set <REGION>
+ibmcloud ks region-set <REGION>
 ```
 
 Kubernetes 환경 설정 정보를 다운로드 합니다.
 
 ``` bash
-ibmcloud cs cluster-config <CLUSTER_NAME>
+ibmcloud ks cluster-config <CLUSTER_NAME>
 ```
 
 `KUBECONFIG` 환경 변수 정보를 설정합니다.
@@ -180,29 +180,74 @@ vets-service        NodePort    xxx.xxx.xxx.129   <none>        80:32005/TCP    
 visits-service      NodePort    xxx.xxx.xxx.196   <none>        80:32004/TCP     1h
 ```
 
-### Ingress
+### Ingress 설정 및 웹 브라우저로 확인
 
-표준 클러스터인 경우 다음 명령으로 Ingress 를 생성합니다.
+표준 클러스터에 배포된 경우 subdomain은 cluster name과 region에 따라 자동으로 할당되며 본 튜토리얼에서는 이 정보를 이용합니다. 만약 표준 클러스터가 아닌 경우 subdomain 생성 정보가 없으므로 아래 [IKS 무료 클러스터를 이용하는 경우](#iks-무료-클러스터를-이용하는-경우)를 참고합니다.
+
+클러스터에 자동으로 할당되는 subdomain은 다음과 같은 명령으로 확인할 수 있습니다.
+
+``` bash
+ibmcloud ks cluster-get <CLUSTER_NAME>
+```
+
+``` bash
+$ ibmcloud ks cluster-get mycluster
+Retrieving cluster mycluster...
+OK
+
+                                
+Name:                           mycluster
+ID:                             xxxx
+State:                          normal
+Created:                        2019-03-20T06:13:44+0000
+Location:                       seo01
+Master URL:                     https://xxx.xxx.xxx:xxxx
+Public Service Endpoint URL:    https://xxx.xxx.xxx:xxxx
+Private Service Endpoint URL:   -
+Master Location:                seo01
+Master Status:                  Ready (1 day ago)
+Master State:                   deployed
+Master Health:                  normal
+Ingress Subdomain:              mycluster.seo01.containers.appdomain.cloud
+Ingress Secret:                 mycluster
+Workers:                        1
+Worker Zones:                   seo01
+Version:                        1.12.9_1555* (1.13.6_1524 latest)
+Owner:                          xxxx@xxxx.xxx
+Monitoring Dashboard:           -
+Resource Group ID:              xxxxxxxxxxx
+Resource Group Name:            default
+```
+ 
+그 중 `Ingress Subdomain` 항목이 자동으로 할당되는 subdomain 주소 입니다. 위의 경우는 <cluster_name>이 `mycluster` <region_or_zone>이 `seo01`이므로 `mycluster.seo01.containers.appdomain.cloud`이 할당된 것을 알 수 있습니다.
+
+k8s/ingress.yaml 파일을 열어 `<INGRESS_SUBDOMAIN>`를 위에서 확인한 ingress subdomin 값으로 변경 후 저장합니다.
+
+``` yaml
+spec:
+  rules:
+  - host: petclinic.<INGRESS_SUBDOMAIN>
+```
+
+ingress.yaml 파일이 준바되었으면 아래 명령으로 Ingress 를 생성합니다.
 
 ``` bash
 kubectl create -f k8s/ingress.yaml
 ```
 
-## 웹 브라우저로 확인
+Ingress가 정상적으로 생성된 경우 다음 URL에 접근하면 현재 실행 중인 petclinic 애플리케이션을 확인 할 수 있습니다.
 
-표준 클러스터에 배포된 경우 웹 브라우저에서 Ingress URL을 통해 접근합니다.
+> https://petclinic.\<INGRESS_SUBDOMAIN\>
 
-> http://<CLUSTER_NAME>.<DC_ZONE_NAME>.containers.appdomain.cloud/
-
-만약 무료 클러스터를 이용하는 경우 아래 [IKS 무료 클러스터를 이용하는 경우](#iks-무료-클러스터를-이용하는-경우)를 참고합니다.
 
 ## IKS 무료 클러스터를 이용하는 경우
 
-무료 클러스터의 경우 Node의 Public IP 정보를 직접 입력하고 클러스터 외부에서 서비스로 접근하려면 Node Port 방식을 이용합니다.
+무료 클러스터의 경우 Node의 Public IP만 제공되며 아래와 같이 두 가지 방식으로 접근 할 수 있습니다.
 
-Spring PetClinic으로 배포된 Service를 nginx를 이용하여 접근하는 방식인데, 다음과 같이 [Nginx Deployment & Service 생성](#nginx-deployment--service-생성)를 생성하거나 [Helm Chart를 이용한 nginx 패키지 배포](Practical.md#helm-install) 방식 중 하나를 선택 할 수 있습니다.
+* [Nginx 이미지와 NodePort 타입 Service를 이용하는 방법](nginx-이미지와-nodeport-타입-service를-이용하는-방법)
+* [Nginx Ingress Controller를 이용하는 방법](nginx-ingress-controller를-이용하는-방법)
 
-### Nginx Deployment & Service 생성
+### Nginx 이미지와 NodePort 타입 Service를 이용하는 방법
 
 다음 명령을 실행하여 Nginx Deployment와 Service를 생성합니다.
 
@@ -221,6 +266,27 @@ kubectl get nodes -o wide
 nginx는 NodePort 32010을 이용하므로 웹 브라우저를 실행하여 다음과 같은 URL에 접근합니다.
 
 > http://\<EXTERNAL-IP\>:32010/
+
+### Nginx Ingress Controller를 이용하는 방법
+
+Nginx Ingress Controller는 Ingress Controller를 Nginx로 구현한 것으로 아래와 같이 코드가 공개되어 있습니다.
+
+* https://github.com/kubernetes/ingress-nginx
+* https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md
+
+다양한 형태로 설치 가능하지만 Helm Chart를 이용하면 별다른 옵션 없이 바로 배포 할 수 있습니다. [Helm Chart를 이용한 nginx 패키지 배포](Practical.md#helm-install) 문서를 참고하면 Nginx Ingress Controller를 설치 할 수 있습니다.
+
+
+Ingress Controller가 준비되었다면 다음 명령으로 ingress를 생성합니다.
+
+``` bash
+kubectl create -f k8s/ingress-nginx.yaml
+```
+
+Ingress가 정상적으로 생성된 경우 다음 URL에 접근하면 현재 실행 중인 petclinic 애플리케이션을 확인 할 수 있습니다.
+
+> http://\<EXTERNAL-IP\>/
+
 
 ## MySQL DB 이용하기 (선택 사항)
 

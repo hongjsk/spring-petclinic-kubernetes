@@ -6,7 +6,7 @@ metadata:
   name: api-ingress
 spec:
   rules:
-  - host: springcamp2018.seo01.containers.appdomain.cloud
+  - host: petclinic.<INGRESS_SUBDOMAIN>
     http:
       paths:
       - path: /
