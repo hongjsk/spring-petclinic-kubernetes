@@ -229,7 +229,7 @@ spec:
   - host: petclinic.<INGRESS_SUBDOMAIN>
 ```
 
-ingress.yaml 파일이 준바되었으면 아래 명령으로 Ingress 를 생성합니다.
+ingress.yaml 파일이 준비되었으면 아래 명령으로 Ingress 를 생성합니다.
 
 ``` bash
 kubectl create -f k8s/ingress.yaml
@@ -244,8 +244,8 @@ Ingress가 정상적으로 생성된 경우 다음 URL에 접근하면 현재 �
 
 무료 클러스터의 경우 Node의 Public IP만 제공되며 아래와 같이 두 가지 방식으로 접근 할 수 있습니다.
 
-* [Nginx 이미지와 NodePort 타입 Service를 이용하는 방법](nginx-이미지와-nodeport-타입-service를-이용하는-방법)
-* [Nginx Ingress Controller를 이용하는 방법](nginx-ingress-controller를-이용하는-방법)
+* [Nginx 이미지와 NodePort 타입 Service를 이용하는 방법](#nginx-이미지와-nodeport-타입-service를-이용하는-방법)
+* [Nginx Ingress Controller를 이용하는 방법](#nginx-ingress-controller를-이용하는-방법)
 
 ### Nginx 이미지와 NodePort 타입 Service를 이용하는 방법
 
