@@ -28,7 +28,7 @@ kubectl create -f mysql-pv-claim.yaml
 
 ## Secret 정보 등록하기
 
-mysql 사용자와 비밀번호는 정보가 그대로 노출되는 ConfigMap 직접 입력이 아닌 Secret으로 입력 후 환경 변수로 간접적으로 로딩하는 방법을 사용합니다. 입력 정보를 명확하게 하게 할 수 있도록 파일을 생성하고 이를 Secret으로 생성하는 방법을 사용합니다.
+mysql 사용자와 비밀번호는 정보가 그대로 노출되는 ConfigMap 직접 입력이 아닌 Secret으로 입력 후 환경 변수로 간접적으로 로딩하는 방법을 사용합니다. 입력 정보를 명확하게 하게 할 수 있도록 파일을 생성하고 이를 Secret으로 생성하는 방법을 사용합니다. 예를 들어, username이 `root`이고 password가 `petclinic`인 경우 다음과 같이 입력합니다. root/petclinic 정보는 공개적으로 노출될 수 있으므로, 실제로 사용환경에 맞추어 변경해서 사용해야 합니다.
 
 ``` bash
 echo -n "root" > username
@@ -51,8 +51,8 @@ kubectl get secret/mysql-credential -o yaml
 ``` yaml
 apiVersion: v1
 data:
-  password: cGV0Y2xpbmljCg==fh
-  username: cm9vdAo=
+  password: xxxxxxx
+  username: yyyyyyy
 kind: Secret
 metadata:
   creationTimestamp: 2018-04-23T08:13:44Z
